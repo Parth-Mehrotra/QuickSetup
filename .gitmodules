@@ -2,5 +2,5 @@
 	path = Tools
 	url = git@github.com:Parth-Mehrotra/Tools.git
 [submodule "static/materialize"]
-	path = static/materialize
+	path = static/libs/materialize
 	url = git@github.com:Dogfalo/materialize.git
