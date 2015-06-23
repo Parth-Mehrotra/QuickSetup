@@ -4,14 +4,15 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 		<div class="container">
 			<div>
-				<h1 class="center-align">Easily share usefull scripts.</h1>
+				<h1 class="center-align">Easily share useful scripts.</h1>
 			</div>
-			  <div class="row center-align">
-				  <div class="card blue-grey darken-1">
+			  <div id="sample" class="row center-align">
+				  <div class="card blue darken-3">
 					<div class="card-content white-text">
 					  <span class="card-title">curl quicksetup.me/!/... | sh</span>
 					</div>
@@ -25,8 +26,7 @@
 				<form class="col s12">
 					<div class="row">
 						<div class="input-field col s12">
-							<input placeholder="ubuntu/install-google-app-engine.sh" id="route" type="text" >
-							<label for="first_name">quicksetup.me/!/</label>
+							<span>quicksetup.me/!/</span><input placeholder="ubuntu/install-google-app-engine.sh" id="route" type="text" >
 						</div>
 					</div>
 				</form>
@@ -36,15 +36,14 @@
 				<form class="col s12">
 					<div class="row">
 						<div class="input-field col s12">
-							<textarea placeholder='echo "Parth is awesome"' id="textarea1" class="materialize-textarea"></textarea>
-							<label for="textarea1">Script</label>
+							<textarea placeholder='echo "This is awesome"' id="textarea1" class="materialize-textarea"></textarea>
 						</div>
 					</div>
 				</form>
 			</div>
 			<div class="row">
-				<a class="col s6 waves-effect waves-light btn-large">Explore other scripts</a>
-				<a class="col s6 waves-effect waves-light btn-large">Reserve</a>
+				<a id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
+				<a id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
 			</div>
 		</div>
 	</body>

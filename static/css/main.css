@@ -1,0 +1,13 @@
+.btn, .btn-large {
+	background-color: #1565c0;
+}
+
+#route {
+	margin-left: 20px;
+	width:350px;
+}
+
+#sample {
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
