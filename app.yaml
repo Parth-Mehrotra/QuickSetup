@@ -11,44 +11,6 @@ handlers:
 - url: /reserve/.*
   script: backend.QuickSetup.app
   
-- url: /(.*\.css)
-  mime_type: text/css
-  static_files: frontend/\1
-  upload: frontend/(.*\.css)
-
-- url: /(.*\.html)
-  mime_type: text/html
-  static_files: frontend/\1
-  upload: frontend/(.*\.html)
-  expiration: "1h"
-
-- url: /(.*\.js)
-  mime_type: text/javascript
-  static_files: frontend/\1
-  upload: frontend/(.*\.js)
-
-- url: /(.*\.(svg|svgz))
-  mime_type: images/svg+xml
-  static_files: frontend/\1
-  upload: frontend/(.*\.(svg|svgz))
-
-# image files
-- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
-  static_files: frontend/\1
-  upload: frontend/(.*\.(bmp|gif|ico|jpeg|jpg|png))
-
-# index files
-- url: /(.+)/
-  static_files: frontend/\1/index.html
-  upload: frontend/(.+)/index.html
-  expiration: "15m"
-
-- url: /(.+)
-  static_files: frontend/\1/index.html
-  upload: frontend/(.+)/index.html
-  expiration: "15m"
-
-# site root
 - url: /
   static_files: frontend/index.html
   upload: frontend/index.html
