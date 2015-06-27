@@ -1,7 +1,7 @@
 import webapp2
 
 class Reserve(webapp2.RequestHandler):
-    def get(self):
+    def post(self):
         print self.request.path
 
 app = webapp2.WSGIApplication([
