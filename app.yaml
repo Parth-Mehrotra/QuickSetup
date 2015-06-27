@@ -8,7 +8,7 @@ threadsafe: true
 default_expiration: "30d"
 
 handlers:
-- url: /reserve/.*
+- url: /.*
   script: backend.QuickSetup.app
   
 - url: /
