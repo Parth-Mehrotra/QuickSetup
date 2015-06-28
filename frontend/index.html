@@ -1,10 +1,11 @@
 <html>
 	<head>
 		<title>Script Sharing</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
-		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.Core.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
 		<style>
 			.btn, .btn-large {
 				background-color: #d84315;
@@ -19,6 +20,11 @@
 				padding-top: 30px;
 				padding-bottom: 30px;
 			}
+
+			#copy-to-clipboard {
+				background-color: white;
+				color: black;
+			}
 		</style>
 	</head>
 	<body>
@@ -29,10 +35,10 @@
 			  <div id="sample" class="row center-align">
 				  <div class="card deep-orange darken-3">
 					<div class="card-content white-text">
-					  <span class="card-title">curl quicksetup.me/!/... | sh</span>
+					  <span id="example" class="card-title">curl quicksetup.me/!/... | sh</span>
 					</div>
 					<div class="card-action">
-					  <a href='#'>Copy to clipboard</a>
+					  <a id="copy-to-clipboard" class="waves-effect waves-light btn">Copy to clipboard</a>
 					</div>
 				  </div>
 			  </div>
@@ -43,6 +49,9 @@
 						<div class="input-field col s12">
 							<span>quicksetup.me/!/</span><input placeholder="ubuntu/install-google-app-engine.sh" id="route" type="text" >
 						</div>
+						<script>
+							$("#copy-to-clipboard").hide();
+						</script>
 					</div>
 				</form>
 			</div>
@@ -51,7 +60,7 @@
 				<form class="col s12">
 					<div class="row">
 						<div class="input-field col s12">
-							<textarea placeholder='echo "This is awesome"' id="textarea1" class="materialize-textarea"></textarea>
+							<textarea placeholder='echo "This is awesome"' id="script" class="materialize-textarea"></textarea>
 						</div>
 					</div>
 				</form>
@@ -61,5 +70,24 @@
 				<a id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
 			</div>
 		</div>
+		<script>
+
+			function showCopyButton() {
+				$("#copy-to-clipboard").slideDown();
+			}
+
+			$("#route").on("input", function() {
+				$("#example").html('curl quicksetup.me/!/'+this.value+' | sh');
+				var client = new ZeroClipboard( $("#copy-to-clipboard"),
+				{
+					moviePath: "//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.swf"
+				});
+				client.on("copy", function(event) {
+					var clipboard = event.clipboardData;
+					clipboard.setData("text/plain", $("#example").html());
+				});
+			});
+		</script>
 	</body>
+
 </html>
