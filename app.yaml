@@ -8,11 +8,11 @@ threadsafe: true
 default_expiration: "30d"
 
 handlers:
-- url: /.*
-  script: backend.QuickSetup.app
-  
 - url: /
   static_files: frontend/index.html
   upload: frontend/index.html
   expiration: "15m"
 
+- url: /(.*)
+  script: backend.QuickSetup.app
+  

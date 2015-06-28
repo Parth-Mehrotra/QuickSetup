@@ -10,14 +10,18 @@ class Script(ndb.Model):
 
 class Reserve(webapp2.RequestHandler):
 	def post(self):
-		route = self.request.path
+		route = self.request.path[8:]
 		script = self.request.get("script")
 		reservation = Script(route=route, script=script, runs=0)
 		reservation.put()
 
 class Retrieve(webapp2.RequestHandler):
 	def get(self):
-		print self.request.path
+		script_query = Script.query(
+				Script.route == self.request.path
+			)
+		script = script_query.fetch(1)
+		self.response.out.write(script[0].script)
 
 app = webapp2.WSGIApplication([
 	('/reserve/.*', Reserve),
