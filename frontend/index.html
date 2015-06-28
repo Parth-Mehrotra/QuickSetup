@@ -37,10 +37,13 @@
 					<div class="card-content white-text">
 					  <span id="example" class="card-title">curl quicksetup.me/!/... | sh</span>
 					</div>
-					<div class="card-action">
+					<div id="card-action" class="card-action">
 					  <a id="copy-to-clipboard" class="waves-effect waves-light btn">Copy to clipboard</a>
 					</div>
 				  </div>
+				<script>
+					$("#card-action").hide();
+				</script>
 			  </div>
 			<h5>Route</h5>
 			<div class="row">
@@ -49,9 +52,6 @@
 						<div class="input-field col s12">
 							<span>quicksetup.me/!/</span><input placeholder="ubuntu/install-google-app-engine.sh" id="route" type="text" >
 						</div>
-						<script>
-							$("#copy-to-clipboard").hide();
-						</script>
 					</div>
 				</form>
 			</div>
@@ -66,7 +66,7 @@
 				</form>
 			</div>
 			<div class="row">
-				<a id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
+				<a href="/explore" id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
 				<a id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
 			</div>
 		</div>
