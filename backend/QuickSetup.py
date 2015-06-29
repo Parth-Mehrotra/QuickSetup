@@ -25,6 +25,8 @@ class RetrieveReserve(webapp2.RequestHandler):
 		scripts = Script.query(Script.route == self.request.path).fetch(1)
 		print scripts
 		if len(scripts) is not 0:
+			scripts[0].runs+=1
+			scripts[0].put()
 			self.response.out.write(scripts[0].script)
 		else:
 			self.response.status = 404
