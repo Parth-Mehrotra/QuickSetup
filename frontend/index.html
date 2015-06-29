@@ -36,6 +36,11 @@
 				line-height: 20px;
 				font-size: 20px;
 			}
+
+			#notification a {
+				color: white;
+				text-decoration: underline;
+			}
 		</style>
 	</head>
 	<body>
@@ -89,7 +94,7 @@
 				$("#status").empty();
 			}
 	
-			function alertGood(message) {
+			function alertBad(message) {
 				clearAlertArea();
 				$("#status").append(' \
 				<div class="card red accent-4"> \
@@ -99,7 +104,7 @@
 				</div> ');
 			}
 
-			function alertBad(message) {
+			function alertGood(message) {
 				clearAlertArea();
 				$("#status").append(' \
 				<div class="card light-green accent-4"> \
@@ -109,27 +114,35 @@
 				</div> ');
 			}
 
-			function sendScript() {
-				var route = $("#route").val();
-				var script = $("#script").val();
-				if (route === null || route === '') {
-					alert("No route specified");
-				} else if (script === null || script === '') {
-					alert("No script specified");
-				} else {
-					$.post("/reserve/" + route, {script: script},
-					function (data) {
-						console.log(data);
-					});
-				}
-			}
-
 			function showCopyButton() {
 				$("#copy-to-clipboard").slideDown();
 			}
 
+			function sendScript() {
+				var route = $("#route").val();
+				var script = $("#script").val();
+				if (route === null || route === '') {
+					alertBad("No route specified");
+				} else if (script === null || script === '') {
+					alertBad("No script specified");
+				} else {
+					$.ajax({
+						type: "POST",
+						url: "/" + route,
+						data: {script:script},
+						statusCode: {
+							202: function() { 
+								alertGood("Your script has been reserved at <a href='http://quicksetup.me/"+route+"'>quicksetup.me/"+route+"</a>");
+								showCopyButton();
+							},
+							409: function() { alertBad("Sorry, this route is no longer available");}
+						}
+					});
+				}
+			}
+
 			$("#route").on("input", function() {
-				$("#example").html('curl quicksetup.me/!/'+this.value+' | sh');
+				$("#example").html('curl quicksetup.me/'+this.value+' | sh');
 				var client = new ZeroClipboard( $("#copy-to-clipboard"),
 				{
 					moviePath: "//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.swf"

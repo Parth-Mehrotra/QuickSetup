@@ -18,6 +18,7 @@ class RetrieveReserve(webapp2.RequestHandler):
 			script = self.request.get("script")
 			reservation = Script(route=route, script=script, runs=0)
 			reservation.put()
+			self.response.status = 202
 		else:
 			self.response.status = 409
 
