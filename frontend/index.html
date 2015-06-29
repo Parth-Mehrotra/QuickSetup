@@ -84,8 +84,10 @@
 			<div id="status" class="row">
 			</div>
 			<div class="row">
-				<a href="/explore" id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
+				<a onclick="showExplore()" id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
 				<a onclick="sendScript();" id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
+			</div>
+			<div id="explore-section" class="row">
 			</div>
 		</div>
 		<script>
@@ -121,8 +123,7 @@
 			function sendScript() {
 				var route = $("#route").val();
 				var script = $("#script").val();
-				if (route === null || route === '') {
-					alertBad("No route specified");
+				if (route === null || route === '') { alertBad("No route specified");
 				} else if (script === null || script === '') {
 					alertBad("No script specified");
 				} else {
@@ -152,7 +153,54 @@
 					clipboard.setData("text/plain", $("#example").html());
 				});
 			});
+
+			function showLoading() {
+				$("#explore-section").append(' \
+					  <div id="loading-explore" class="progress"> \
+						  <div class="indeterminate"></div> \
+					  </div> \
+				');
+			}
+
+			function createTableHeader() {
+				$("#explore-section").append(' \
+					<table> \
+						<thead> \
+							<tr> \
+								<th data-field="route">Route</th> \
+								<th data-field="runs">Runs</th> \
+							</tr> \
+						</thead> \
+						<tbody id="explore-table-body"> \
+						</tbody> \
+					</table> \
+				');
+			}
+
+			function createTable() {
+				$.ajax({
+					type: 'POST',
+					url: '/explore',
+					success: function(data) {
+						for (var i = 0; i < data.length; i++) {
+							$("#explore-table-body").append(' \
+								<tr> \
+									<td>'+data[i].route+'</td> \
+									<td>'+data[i].runs+'</td> \
+								<tr> \
+							');
+						}
+
+						$("#loading-explore").remove();
+					}
+				});
+			}
+
+			function showExplore() {
+				showLoading();
+				createTableHeader();
+				createTable();
+			}
 		</script>
 	</body>
-
 </html>
