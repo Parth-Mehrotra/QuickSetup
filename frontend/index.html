@@ -25,6 +25,17 @@
 				background-color: white;
 				color: black;
 			}
+
+			#status {
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			#notification {
+				line-height: 20px;
+				font-size: 20px;
+			}
 		</style>
 	</head>
 	<body>
@@ -65,6 +76,8 @@
 					</div>
 				</form>
 			</div>
+			<div id="status" class="row">
+			</div>
 			<div class="row">
 				<a href="/explore" id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
 				<a onclick="sendScript();" id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
@@ -72,6 +85,30 @@
 		</div>
 		<script>
 			
+			function clearAlertArea() {
+				$("#status").empty();
+			}
+	
+			function alertGood(message) {
+				clearAlertArea();
+				$("#status").append(' \
+				<div class="card red accent-4"> \
+					<div class="card-content white-text"> \
+						<span id="notification" class="card-title">' + message +'</span> \
+					</div> \
+				</div> ');
+			}
+
+			function alertBad(message) {
+				clearAlertArea();
+				$("#status").append(' \
+				<div class="card light-green accent-4"> \
+					<div class="card-content white-text"> \
+						<span id="notification" class="card-title">' + message +'</span> \
+					</div> \
+				</div> ');
+			}
+
 			function sendScript() {
 				var route = $("#route").val();
 				var script = $("#script").val();
