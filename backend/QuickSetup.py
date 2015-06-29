@@ -3,7 +3,7 @@ import datetime
 import json
 from google.appengine.ext import ndb
 
-#TODO We should keep track of the ammount of time since the last run from the same IP so people can't force their scripts to the top of the leaderboard simply by getting a bunch of times
+#TODO We should keep track of the amount of time since the last run from the same IP so people can't force their scripts to the top of the leader board simply by getting a bunch of times
 class Script(ndb.Model):
 	route = ndb.StringProperty(required=True)
 	script = ndb.StringProperty(required=True)
@@ -11,7 +11,7 @@ class Script(ndb.Model):
 	creation_date = ndb.DateProperty(auto_now_add=True)
 
 class Explore(webapp2.RequestHandler):
-	def get(self):
+	def post(self):
 		self.response.headers['Content-Type'] = 'application/json'   
 		scripts = Script.query(Script.runs >= 1).fetch()
 		routeRuns = []
