@@ -1,12 +1,25 @@
 import webapp2
 import datetime
+import json
 from google.appengine.ext import ndb
 
+#TODO We should keep track of the ammount of time since the last run from the same IP so people can't force their scripts to the top of the leaderboard simply by getting a bunch of times
 class Script(ndb.Model):
 	route = ndb.StringProperty(required=True)
 	script = ndb.StringProperty(required=True)
 	runs = ndb.IntegerProperty(required=True)
 	creation_date = ndb.DateProperty(auto_now_add=True)
+
+class Explore(webapp2.RequestHandler):
+	def get(self):
+		self.response.headers['Content-Type'] = 'application/json'   
+		scripts = Script.query(Script.runs >= 1).fetch()
+		routeRuns = []
+		for script in scripts: 
+			routeRuns.append({"route": script.route, "runs":script.runs})
+
+		self.response.out.write(json.dumps(routeRuns))
+
 
 class RetrieveReserve(webapp2.RequestHandler):
 	def is_unique(self, route):
@@ -33,5 +46,6 @@ class RetrieveReserve(webapp2.RequestHandler):
 			self.response.status = 404
 
 app = webapp2.WSGIApplication([
+	('/explore', Explore),
 	('/.*', RetrieveReserve)
 ], debug=True)
