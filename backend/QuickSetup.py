@@ -8,22 +8,27 @@ class Script(ndb.Model):
 	runs = ndb.IntegerProperty(required=True)
 	creation_date = ndb.DateProperty(auto_now_add=True)
 
-class Reserve(webapp2.RequestHandler):
-	def post(self):
-		route = self.request.path[8:]
-		script = self.request.get("script")
-		reservation = Script(route=route, script=script, runs=0)
-		reservation.put()
+class RetrieveReserve(webapp2.RequestHandler):
+	def is_unique(self, route):
+		return len(Script.query(Script.route == route).fetch(1)) is 0
 
-class Retrieve(webapp2.RequestHandler):
+	def post(self):
+		route = self.request.path
+		if self.is_unique(route):
+			script = self.request.get("script")
+			reservation = Script(route=route, script=script, runs=0)
+			reservation.put()
+		else:
+			self.response.status = 409
+
 	def get(self):
-		script_query = Script.query(
-				Script.route == self.request.path
-			)
-		script = script_query.fetch(1)
-		self.response.out.write(script[0].script)
+		scripts = Script.query(Script.route == self.request.path).fetch(1)
+		print scripts
+		if len(scripts) is not 0:
+			self.response.out.write(scripts[0].script)
+		else:
+			self.response.status = 404
 
 app = webapp2.WSGIApplication([
-	('/reserve/.*', Reserve),
-	('/.*', Retrieve)
+	('/.*', RetrieveReserve)
 ], debug=True)
