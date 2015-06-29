@@ -67,10 +67,25 @@
 			</div>
 			<div class="row">
 				<a href="/explore" id="explore" class="col s5 waves-effect waves-light btn-large">Explore other scripts</a>
-				<a id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
+				<a onclick="sendScript();" id="reserve" class="col s5 offset-s2 waves-effect waves-light btn-large">Reserve</a>
 			</div>
 		</div>
 		<script>
+			
+			function sendScript() {
+				var route = $("#route").val();
+				var script = $("#script").val();
+				if (route === null || route === '') {
+					alert("No route specified");
+				} else if (script === null || script === '') {
+					alert("No script specified");
+				} else {
+					$.post("/reserve/" + route, {script: script},
+					function (data) {
+						console.log(data);
+					});
+				}
+			}
 
 			function showCopyButton() {
 				$("#copy-to-clipboard").slideDown();
