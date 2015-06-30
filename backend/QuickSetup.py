@@ -13,7 +13,7 @@ class Script(ndb.Model):
 class Explore(webapp2.RequestHandler):
 	def post(self):
 		self.response.headers['Content-Type'] = 'application/json'   
-		scripts = Script.query(Script.runs >= 1).order(-Script.runs).fetch()
+		scripts = Script.query(Script.runs >= 0).order(-Script.runs).fetch()
 		routeRuns = []
 		for script in scripts: 
 			routeRuns.append({"route": script.route, "runs":script.runs})
