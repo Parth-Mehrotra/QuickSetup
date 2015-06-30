@@ -92,6 +92,7 @@
 		</div>
 		<script>
 			
+			var table = false;
 			function clearAlertArea() {
 				$("#status").empty();
 			}
@@ -197,9 +198,12 @@
 			}
 
 			function showExplore() {
-				showLoading();
-				createTableHeader();
-				createTable();
+				if (!table) {
+					showLoading();
+					createTableHeader();
+					createTable();
+				}
+				table = true;
 			}
 		</script>
 	</body>
