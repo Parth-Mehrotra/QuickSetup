@@ -61,7 +61,6 @@ class RetrieveReserve(webapp2.RequestHandler):
 		else:
 			self.response.status = 400
 
-
 	def get(self):
 		scripts = Script.query(Script.route == self.request.path).fetch(1)
 		if len(scripts) is not 0:
