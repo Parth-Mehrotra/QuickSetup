@@ -6,6 +6,7 @@
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
 		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -26,8 +27,8 @@
 			}
 
 			#sample {
-				padding-top: 30px;
-				padding-bottom: 30px;
+				padding-top: 5px;
+				padding-bottom: 5px;
 			}
 
 			#copy-to-clipboard {
@@ -49,6 +50,10 @@
 			#notification a {
 				color: white;
 				text-decoration: underline;
+			}
+
+			.script-box {
+				margin-bottom: 0px;
 			}
 		</style>
 	</head>
@@ -81,15 +86,16 @@
 				</form>
 			</div>
 			<h5>Enter Script</h5>
-			<div class="row">
-				<form class="col s12">
-					<div class="row">
-						<div class="input-field col s12">
+			<div class="script-box row">
+				<form class="script-box col s12">
+					<div class="script-box row">
+						<div class="script-box input-field col s12">
 							<textarea placeholder='echo "This is awesome"' id="script" class="materialize-textarea"></textarea>
 						</div>
 					</div>
 				</form>
 			</div>
+			<div align="center" id="captcha" class="g-recaptcha" data-sitekey="6Ldv6hITAAAAADhnlhsoyOivI7Fd1scTdBMEhHL8"></div>
 			<div id="status" class="row">
 			</div>
 			<div class="row">
@@ -136,17 +142,24 @@
 				if (route === null || route === '') { alertBad("No route specified");
 				} else if (script === null || script === '') {
 					alertBad("No script specified");
+				} else if (grecaptcha.getResponse() === "") {
+					alertBad("Are you a robot?");
 				} else {
 					$.ajax({
 						type: "POST",
 						url: "/" + route,
-						data: {script:script},
+						data: {script:script, captcha:grecaptcha.getResponse()},
 						statusCode: {
 							202: function() { 
 								alertGood("Your script has been reserved at <a href='http://quicksetup.me/"+route+"'>quicksetup.me/"+route+"</a>");
 								showCopyButton();
 							},
-							409: function() { alertBad("Sorry, this route is no longer available");}
+							409: function() {
+								alertBad("Sorry, this route is no longer available");
+							},
+							400: function() { 
+								alertBad("Sorry, Google says you're a robot");
+							}
 						}
 					});
 				}
