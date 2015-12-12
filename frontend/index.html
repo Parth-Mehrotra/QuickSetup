@@ -142,7 +142,7 @@
 				if (route === null || route === '') { alertBad("No route specified");
 				} else if (script === null || script === '') {
 					alertBad("No script specified");
-				} else if (captcha:grecaptcha.getResponse() === '') {
+				} else if (grecaptcha.getResponse() === "") {
 					alertBad("Are you a robot?");
 				} else {
 					$.ajax({
@@ -154,8 +154,12 @@
 								alertGood("Your script has been reserved at <a href='http://quicksetup.me/"+route+"'>quicksetup.me/"+route+"</a>");
 								showCopyButton();
 							},
-							409: function() { alertBad("Sorry, this route is no longer available");},
-							400: function() { alertBad("Sorry, Google says you're a robot"); }
+							409: function() {
+								alertBad("Sorry, this route is no longer available");
+							},
+							400: function() { 
+								alertBad("Sorry, Google says you're a robot");
+							}
 						}
 					});
 				}

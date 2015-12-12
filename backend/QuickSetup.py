@@ -50,8 +50,7 @@ class RetrieveReserve(webapp2.RequestHandler):
 	def post(self):
 		route = self.request.path
 		if self.is_valid_captcha(self.request.get("captcha")):
-			if self.is_unique(route)
-				
+			if self.is_unique(route):
 				script = self.request.get("script")
 				reservation = Script(route=route, script=script, runs=0)
 				reservation.put()
