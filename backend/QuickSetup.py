@@ -29,12 +29,14 @@ class RetrieveReserve(webapp2.RequestHandler):
 		return len(Script.query(Script.route == route).fetch(1)) is 0
 	
 	def is_valid_captcha(self, captcha_key):
+		if captcha_key is "":
+			return False
+
+		url = "https://www.google.com/recaptcha/api/siteverify"
 		form_fields = {
-		  "secret": "Albert",
-		  "last_name": "Johnson",
-		  "email_address": "Albert.Johnson@example.com"
+		  "secret": secret_keys_that_should_never_be_versioned.captcha,
+		  "response": captcha_key
 		}
-		print("request")
 		form_data = urllib.urlencode(form_fields)
 
 		result = urlfetch.fetch(url=url,
@@ -42,12 +44,12 @@ class RetrieveReserve(webapp2.RequestHandler):
 			method=urlfetch.POST,
 			headers={'Content-Type': 'application/x-www-form-urlencoded'})
 
-		print(result.content)
-		
+		response = json.loads(result.content)
+		return response.get("success") == True
 
 	def post(self):
 		route = self.request.path
-		if self.is_unique(route) and (self.request.get("captcha") is not ""):
+		if self.is_unique(route) and self.is_valid_captcha(self.request.get("captcha")):
 			
 			script = self.request.get("script")
 			reservation = Script(route=route, script=script, runs=0)
@@ -58,7 +60,6 @@ class RetrieveReserve(webapp2.RequestHandler):
 
 	def get(self):
 		scripts = Script.query(Script.route == self.request.path).fetch(1)
-		print scripts
 		if len(scripts) is not 0:
 			scripts[0].runs+=1
 			scripts[0].put()
