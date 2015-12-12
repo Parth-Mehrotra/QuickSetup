@@ -1,7 +1,9 @@
 import webapp2
+import urllib
 import datetime
 import json
 from google.appengine.ext import ndb
+from google.appengine.api import urlfetch
 
 #TODO We should keep track of the amount of time since the last run from the same IP so people can't force their scripts to the top of the leader board simply by getting a bunch of times
 class Script(ndb.Model):
@@ -26,8 +28,24 @@ class RetrieveReserve(webapp2.RequestHandler):
 		return len(Script.query(Script.route == route).fetch(1)) is 0
 
 	def post(self):
+		url = "http://httpbin.org/post"
+		form_fields = {
+		  "first_name": "Albert",
+		  "last_name": "Johnson",
+		  "email_address": "Albert.Johnson@example.com"
+		}
+		print("request")
+		form_data = urllib.urlencode(form_fields)
+
+		result = urlfetch.fetch(url=url,
+			payload=form_data,
+			method=urlfetch.POST,
+			headers={'Content-Type': 'application/x-www-form-urlencoded'})
+
+		print(result.content)
 		route = self.request.path
-		if self.is_unique(route):
+		if self.is_unique(route) and (self.request.get("captcha") is not ""):
+			
 			script = self.request.get("script")
 			reservation = Script(route=route, script=script, runs=0)
 			reservation.put()
