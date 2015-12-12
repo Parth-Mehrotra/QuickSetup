@@ -49,14 +49,18 @@ class RetrieveReserve(webapp2.RequestHandler):
 
 	def post(self):
 		route = self.request.path
-		if self.is_unique(route) and self.is_valid_captcha(self.request.get("captcha")):
-			
-			script = self.request.get("script")
-			reservation = Script(route=route, script=script, runs=0)
-			reservation.put()
-			self.response.status = 202
+		if self.is_valid_captcha(self.request.get("captcha")):
+			if self.is_unique(route)
+				
+				script = self.request.get("script")
+				reservation = Script(route=route, script=script, runs=0)
+				reservation.put()
+				self.response.status = 202
+			else:
+				self.response.status = 409
 		else:
-			self.response.status = 409
+			self.response.status = 400
+
 
 	def get(self):
 		scripts = Script.query(Script.route == self.request.path).fetch(1)
