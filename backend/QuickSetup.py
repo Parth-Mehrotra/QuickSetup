@@ -1,3 +1,4 @@
+import secret_keys_that_should_never_be_versioned
 import webapp2
 import urllib
 import datetime
@@ -26,11 +27,10 @@ class Explore(webapp2.RequestHandler):
 class RetrieveReserve(webapp2.RequestHandler):
 	def is_unique(self, route):
 		return len(Script.query(Script.route == route).fetch(1)) is 0
-
-	def post(self):
-		url = "http://httpbin.org/post"
+	
+	def is_valid_captcha(self, captcha_key):
 		form_fields = {
-		  "first_name": "Albert",
+		  "secret": "Albert",
 		  "last_name": "Johnson",
 		  "email_address": "Albert.Johnson@example.com"
 		}
@@ -43,6 +43,9 @@ class RetrieveReserve(webapp2.RequestHandler):
 			headers={'Content-Type': 'application/x-www-form-urlencoded'})
 
 		print(result.content)
+		
+
+	def post(self):
 		route = self.request.path
 		if self.is_unique(route) and (self.request.get("captcha") is not ""):
 			
