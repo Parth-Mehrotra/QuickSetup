@@ -114,12 +114,13 @@
 	
 			function alertBad(message) {
 				clearAlertArea();
-				$("#status").append(' \
-				<div class="card red accent-4"> \
-					<div class="card-content white-text"> \
-						<span id="notification" class="card-title">' + message +'</span> \
-					</div> \
-				</div> ');
+				$("#status").append(
+					$("<div>").addClass("card red accent-4").append(
+						$('<div>').addClass("card-content white-text").append(
+							$("<span>").attr('id', 'notification').addClass("card-title").text(message)
+						)
+					)
+				);
 			}
 
 			function alertGood(message) {
