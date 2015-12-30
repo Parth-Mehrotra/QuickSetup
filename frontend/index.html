@@ -117,7 +117,7 @@
 				$("#status").append(
 					$("<div>").addClass("card red accent-4").append(
 						$('<div>').addClass("card-content white-text").append(
-							$("<span>").attr('id', 'notification').addClass("card-title").text(message)
+							$("<span>").attr('id', 'notification').addClass("card-title").html(message)
 						)
 					)
 				);
@@ -125,12 +125,13 @@
 
 			function alertGood(message) {
 				clearAlertArea();
-				$("#status").append(' \
-				<div class="card light-green accent-4"> \
-					<div class="card-content white-text"> \
-						<span id="notification" class="card-title">' + message +'</span> \
-					</div> \
-				</div> ');
+				$("#status").append(
+					$("<div>").addClass("card light-green accent-4").append(
+						$('<div>').addClass("card-content white-text").append(
+							$("<span>").attr('id', 'notification').addClass("card-title").html(message)
+						)
+					)
+				);
 			}
 
 			function showCopyButton() {
